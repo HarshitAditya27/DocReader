@@ -7,8 +7,10 @@ import React from "react";
 import { useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const FileUpload = () => {
+  const router = useRouter();
   const [uploading, setUploading] = React.useState(false);
   const { mutate, isLoading } = useMutation({
     mutationFn: async ({
@@ -44,8 +46,10 @@ const FileUpload = () => {
           return;
         }
         mutate(data, {
-          onSuccess: (data) => {
-            toast.success(data.message);
+          onSuccess: ({ chat_id }) => {
+            toast.success("Chat has been created");
+            router.push(`/chats/${chat_id}`);
+            // toast.success(data.message);
           },
           onError: (err) => {
             toast.error("Error creating chart");
